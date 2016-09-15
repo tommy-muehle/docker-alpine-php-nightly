@@ -27,6 +27,8 @@ RUN set -xe \
 		openssl-dev \
 		sqlite-dev \
 		bison \
+        libbz2 \
+        bzip2-dev \
 	&& mkdir -p $PHP_INI_DIR/conf.d \
     && git clone https://github.com/php/php-src.git /usr/src/php \
     && cd /usr/src/php \
@@ -42,6 +44,7 @@ RUN set -xe \
         --with-libedit \
         --with-openssl \
         --with-zlib \
+        --with-bz2 \
         --without-pear \
     && make -j"$(getconf _NPROCESSORS_ONLN)" \
     && make install \
