@@ -28,11 +28,8 @@ RUN set -xe \
 		sqlite-dev \
 		bison \
 	&& mkdir -p $PHP_INI_DIR/conf.d \
-    && git clone https://github.com/php/php-src.git /usr/src/php
-
-WORKDIR /usr/src/php
-
-RUN set -xe \
+    && git clone https://github.com/php/php-src.git /usr/src/php \
+    && cd /usr/src/php \
     && ./buildconf \
     && ./configure \
         --with-config-file-path="$PHP_INI_DIR" \
