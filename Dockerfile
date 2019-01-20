@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.6
 
 ENV PHP_VERSION nightly
 ENV PHP_INI_DIR /usr/local/etc/php
