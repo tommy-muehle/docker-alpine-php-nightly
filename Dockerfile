@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.8
 
 ENV PHP_VERSION nightly
 ENV PHP_INI_DIR /usr/local/etc/php
@@ -24,7 +24,7 @@ RUN set -xe \
 		curl-dev \
 		libedit-dev \
 		libxml2-dev \
-		openssl-dev \
+		libressl-dev \
 		sqlite-dev \
 		bison \
         libbz2 \
