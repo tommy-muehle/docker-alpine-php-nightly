@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 ENV PHP_VERSION nightly
 ENV PHP_INI_DIR /usr/local/etc/php
@@ -6,14 +6,14 @@ ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -xe \
     && apk add --no-cache --virtual .persistent-deps \
         ca-certificates \
-		curl \
-		tar \
-		xz \
-		git
+        curl \
+        tar \
+        xz \
+        git
 
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps \
-		autoconf \
+        autoconf \
         file \
         g++ \
         gcc \
@@ -21,15 +21,16 @@ RUN set -xe \
         make \
         pkgconf \
         re2c \
-		curl-dev \
-		libedit-dev \
-		libxml2-dev \
-		libressl-dev \
-		sqlite-dev \
-		bison \
+        curl-dev \
+        libedit-dev \
+        libxml2-dev \
+        openssl-dev \
+        oniguruma-dev \
+        sqlite-dev \
+        bison \
         libbz2 \
         bzip2-dev \
-	&& mkdir -p $PHP_INI_DIR/conf.d \
+    && mkdir -p $PHP_INI_DIR/conf.d \
     && git clone https://github.com/php/php-src.git /usr/src/php \
     && cd /usr/src/php \
     && ./buildconf \
@@ -50,13 +51,13 @@ RUN set -xe \
     && make install \
     && rm -rf /usr/src/php \
     && runDeps="$( \
-		scanelf --needed --nobanner --recursive /usr/local \
-			| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-			| sort -u \
-			| xargs -r apk info --installed \
-			| sort -u \
-	    )" \
-	&& apk add --no-cache --virtual .php-rundeps $runDeps \
-	&& apk del .build-deps
+        scanelf --needed --nobanner --recursive /usr/local \
+            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+            | sort -u \
+            | xargs -r apk info --installed \
+            | sort -u \
+        )" \
+    && apk add --no-cache --virtual .php-rundeps $runDeps \
+    && apk del .build-deps
 
 CMD ["php", "-a"]
